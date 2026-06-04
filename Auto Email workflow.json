@@ -1,0 +1,158 @@
+{
+  "name": "Auto Email workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Keko, your email sending agent.\nHow can i help you today ?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "198143a2-2edd-4751-9557-b07a0930568a",
+      "name": "When chat message received",
+      "webhookId": "ed3fefb4-fbbc-4298-8901-f15948a96021"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a very polite email sending agent. you have to send emails based on the context provided or requirenments shared over chat.\n\nmake sure to add Best Regards, Atharva at the end of the email"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ae3730f1-e471-4cb4-9447-1983fe0cecec",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "24ee1f13-0a48-4510-be84-8255dc18808d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "avHS9mYjYQIR4yAD",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "75b6526f-3e05-4ca8-b35b-40ebb7503d04",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "e83ffa35-0879-4819-83bc-b25dd1394b00",
+      "name": "Send Gmail",
+      "webhookId": "912eeff4-7021-4a6e-b008-6f3df89a71d6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BuTL9PVKmg1kr6vj",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "0ea939c8-68f9-4dc6-85e2-1dd8ac7f7305",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cea5081fd9e43fd4a61bb30985dc9908264ca05825e7b857826a98e0843ef58d"
+  },
+  "nodeGroups": [],
+  "id": "rHOkhs6PIXUmaoPh",
+  "tags": []
+}
