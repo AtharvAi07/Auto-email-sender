@@ -24,6 +24,8 @@ This repository contains the exported JSON workflow architecture for replication
 3. **Generation:** The LLM constructs a professional response based on pre-configured system prompts.
 4. **Action:** The **Gmail tool** takes the final output and sends/drafts the email directly to the recipient.
 
+![n8n Workflow Screenshot](workflow-canvas.png)
+
 ## 💻 Setup & Installation
 
 1. Download the `auto-email-sender.json` file from this repository.
